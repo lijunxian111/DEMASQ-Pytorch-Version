@@ -8,7 +8,7 @@ from model import Toymodel
 from read_data import load_data
 from torch.optim import Adam
 from tqdm import tqdm
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score
 from model import DEMASQ
 
 def train_toy_model():
@@ -36,6 +36,8 @@ def train_toy_model():
         print(f'epoch: {e}, train loss: {total_train_loss/cnt}')
         model.eval()
         total_acc = 0.
+        total_val_precision = 0.
+        total_val_recall = 0.
         with torch.no_grad():
             for i, (x, y) in enumerate(data_val):
                 cnt_val += 1
@@ -43,8 +45,12 @@ def train_toy_model():
                 preds = torch.argmax(logits, dim=1).detach().cpu().numpy()
                 y = y.detach().cpu().numpy()
                 total_acc += accuracy_score(y, preds)
+                total_val_precision += recall_score(y, preds, pos_label=0)
+                total_val_precision += precision_score(y, preds, pos_label=0)
         val_acc = total_acc/cnt_val
-        print(f"epoch: {e}, val_acc: {val_acc}")
+        val_precision = total_val_precision/cnt_val
+        val_recall = total_val_recall/cnt_val
+        print(f"epoch: {e}, val_acc: {val_acc}, val_precision: {val_precision}, val_recall: {val_recall}")
         if val_acc > best_acc:
             cnt_pat = 0
             best_acc = val_acc
@@ -69,7 +75,7 @@ def train_DEM_model(EPOCHS, LR, IN_DIM, SAVE_PATH):
         cnt_val = 0.
         cnt_pat = 0
         total_train_acc = 0.0
-        for i, (x,y) in tqdm(enumerate(data_train)):
+        for i, (x,y) in enumerate(data_train):
             cnt += 1
             optimizer.zero_grad()
             #logits = model(x)
