@@ -69,11 +69,11 @@ def train_DEM_model(EPOCHS, LR, IN_DIM, SAVE_PATH):
     #criterion = nn.CrossEntropyLoss()
     best_acc = 0.
     patience = 30
+    cnt_pat = 0
     for e in tqdm(range(epochs)):
         model.train()
         cnt = 0.
         cnt_val = 0.
-        cnt_pat = 0
         total_train_acc = 0.0
         for i, (x,y) in enumerate(data_train):
             cnt += 1
