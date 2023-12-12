@@ -98,8 +98,12 @@ def train_DEM_model(EPOCHS, LR, IN_DIM, SAVE_PATH):
                 preds[preds > 0.5] = 1
                 preds[preds < 0.5] = 0
                 total_acc += accuracy_score(y, preds)
+                total_val_precision += recall_score(y, preds, pos_label=0)
+                total_val_precision += precision_score(y, preds, pos_label=0)
         val_acc = total_acc/cnt_val
-        print(f"epoch: {e}, val_acc: {val_acc}")
+        val_precision = total_val_precision/cnt_val
+        val_recall = total_val_recall/cnt_val
+        print(f"epoch: {e}, val_acc: {val_acc}, val_precision: {val_precision}, val_recall: {val_recall}")
         if val_acc > best_acc:
             cnt_pat = 0
             best_acc = val_acc
