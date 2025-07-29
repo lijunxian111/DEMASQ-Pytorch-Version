@@ -1,4 +1,4 @@
-This is the pytorch version reproduction for the ndss23 paper: DEMASQ  
+This is the pytorch version reproduction for the ndss23 paper: DEMASQ; official code is not released by the authors, and I'm not sure if all my options in my reproduction is correct.    
 dataset:  
 `We use the dataset for kaggle competition 'LLM generated text detecting' and DAIGT V2 trainset. The two ones can  
 be found on kaggle. You can also add your own dataset. Put it under the 'dataset' directory.`
